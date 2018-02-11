@@ -8,31 +8,32 @@
             http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
     <!-- 不过滤登录页面 -->
-    <security:http pattern="/login.jsp" security="none" />
+    <security:http access-denied-page="/403.jsp">
+    	<security:intercept-url pattern="/login.jsp*" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+    	<security:form-login login-page="/login.jsp" authentication-failure-url="/login.jsp?error=true" default-target-url="/index.jsp"/>
 
-    <!-- 配置SpringSecurity的http安全服务 -->
-    <security:http auto-config="true">
-        <!-- 只有ROLE_ADMIN权限用户才能访问/admin/**页面 -->
-        <security:intercept-url pattern="/admin/**"
-            access="ROLE_ADMIN" />
-
-        <!-- 只有ROLE_ADMIN或ROLE_USER权限用户才能访问所有页面 -->
-        <security:intercept-url pattern="/**"
-            access="ROLE_ADMIN,ROLE_USER" />
-
+    	<security:logout logout-success-url="/login.jsp"/>
+    	
+    	<security:custom-filter before="FILTER_SECURITY_INTERCEPTOR" ref="myFilter"/>
     </security:http>
-
-    <!-- 认证管理器，配置SpringSecutiry的权限信息 -->
-    <security:authentication-manager>
-        <security:authentication-provider>
-            <!-- 帐户信息，指定用户名、密码和权限 -->
-            <security:user-service>
-                <security:user name="admin" password="admin"
-                    authorities="ROLE_ADMIN,ROLE_USER" />
-            </security:user-service>
-
-
-        </security:authentication-provider>
+    
+    <bean id="myFilter" class="com.cn.qgzx.security.MyFilterSecurityInterceptor">
+    	<property name="authenticationManager" ref="authenticationManager"/>
+    	<property name="accessDecisionManager" ref="accessDecisionManager"/>
+    	<property name="securityMetadataSource" ref="securityMetadataSource"/>
+    </bean>
+    
+    <!-- 认证管理器，实现用户认证的入口，主要实现UserDetailsService接口即可 -->
+    <security:authentication-manager alias="authenticationManager">
+    	<security:authentication-provider user-service-ref="myUserDetailService">
+    		<security:password-encoder hash="md5"/>
+    	</security:authentication-provider>
     </security:authentication-manager>
+    
+    <bean id="myUserDetailService" class="com.cn.qgzx.security.MyUserDetailService"/>
+    
+    <bean id="accessDecisionManager" class="com.cn.qgzx.security.MyAccessDecisionManager"/>   
+    
+    <bean id="securityMetadataSource" class="com.cn.qgzx.security.MyInvocationSecurityMetadataSource"/>
 
 </beans> 
