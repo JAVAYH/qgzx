@@ -30,7 +30,7 @@ public class MyInvocationSecurityMetadataSource implements FilterInvocationSecur
         Collection<ConfigAttribute> atts = new ArrayList<ConfigAttribute>();  
         ConfigAttribute ca = new SecurityConfig("ROLE_ADMIN");  
         atts.add(ca);  
-        resourceMap.put("/403.jsp", atts);  
+        resourceMap.put("/user/showInfo.do", atts);  
     }  
 	
 	@Override

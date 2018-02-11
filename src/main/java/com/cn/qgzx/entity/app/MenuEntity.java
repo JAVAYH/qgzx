@@ -2,6 +2,8 @@ package com.cn.qgzx.entity.app;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
+import com.cn.qgzx.entity.BasicEntity;
 /**
  * 
  * @author yanghong
@@ -10,7 +12,11 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "T_APP_MENU")
-public class MenuEntity {
+public class MenuEntity extends BasicEntity{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String menuName; //菜单名称
 	private String menuUrl; //菜单路径
 	private String upMenu; //上级菜单

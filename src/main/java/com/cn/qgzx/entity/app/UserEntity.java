@@ -1,9 +1,19 @@
 package com.cn.qgzx.entity.app;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.cn.qgzx.entity.BasicEntity;
 /**
@@ -14,7 +24,11 @@ import com.cn.qgzx.entity.BasicEntity;
  */
 @Entity
 @Table(name = "T_APP_USER")
-public class UserEntity extends BasicEntity{
+public class UserEntity extends BasicEntity implements UserDetails{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String accName; //账户名
 	private String userName; //用户姓名
 	private String passWord; //用户密码
@@ -26,6 +40,8 @@ public class UserEntity extends BasicEntity{
 	private String enable; //是否可用
 	private String expired; //是否过期
 	private String locking; //是否锁定
+	
+	private Set<RoleEntity> roles = new HashSet<RoleEntity>();
 	
 	public String getAccName() {
 		return accName;
@@ -92,5 +108,43 @@ public class UserEntity extends BasicEntity{
 	}
 	public void setLocking(String locking) {
 		this.locking = locking;
+	}
+	
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return null;
+	}
+	@Override
+	public String getPassword() {
+		return this.passWord;
+	}
+	@Override
+	public String getUsername() {
+		return this.userName;
+	}
+	@Override
+	public boolean isAccountNonExpired() {
+		return false;
+	}
+	@Override
+	public boolean isAccountNonLocked() {
+		return false;
+	}
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return false;
+	}
+	@Override
+	public boolean isEnabled() {
+		return false;
+	}
+	
+	@OneToMany(cascade=(CascadeType.ALL))
+	@JoinTable(name="R_APP_USER_ROLE",joinColumns={@JoinColumn(name="USERID")},inverseJoinColumns={@JoinColumn(name="ROLEID")})
+	public Set<RoleEntity> getRoles() {
+		return roles;
+	}
+	public void setRoles(Set<RoleEntity> roles) {
+		this.roles = roles;
 	}
 }

@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
+import org.springframework.stereotype.Component;
 public class MyUserDetailService implements UserDetailsService{
 
 	@Override
@@ -20,9 +20,11 @@ public class MyUserDetailService implements UserDetailsService{
 		
 		if (username.equals("admin")) {
 			auths = new ArrayList<GrantedAuthority>();
-            auths.add(new GrantedAuthorityImpl("ROLE_ROBIN")); 
+            auths.add(new GrantedAuthorityImpl("ROLE_ADMIN")); 
 		}
         User user = new User(username, "admin", true, true, true, true, auths); 
+		System.out.println("----------"+user.toString());
+		System.out.println("------------"+"登陆认证");
 		return user;
 	}
 

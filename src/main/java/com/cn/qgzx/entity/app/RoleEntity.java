@@ -13,6 +13,10 @@ import com.cn.qgzx.entity.BasicEntity;
 @Entity
 @Table(name = "T_APP_ROLE")
 public class RoleEntity extends BasicEntity{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String roleName; //角色名称
 	public String getRoleName() {
 		return roleName;

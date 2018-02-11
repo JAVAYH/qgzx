@@ -8,12 +8,11 @@
             http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
     <!-- 不过滤登录页面 -->
-    <security:http access-denied-page="/403.jsp">
+    <security:http>
     	<security:intercept-url pattern="/login.jsp*" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
-    	<security:form-login login-page="/login.jsp" authentication-failure-url="/login.jsp?error=true" default-target-url="/index.jsp"/>
-
+    	<security:form-login login-page="/login.jsp" login-processing-url="/user/index.do" default-target-url="/user/showInfo.do" authentication-failure-url="/403.jsp?error=true"/>
+		
     	<security:logout logout-success-url="/login.jsp"/>
-    	
     	<security:custom-filter before="FILTER_SECURITY_INTERCEPTOR" ref="myFilter"/>
     </security:http>
     
@@ -26,10 +25,13 @@
     <!-- 认证管理器，实现用户认证的入口，主要实现UserDetailsService接口即可 -->
     <security:authentication-manager alias="authenticationManager">
     	<security:authentication-provider user-service-ref="myUserDetailService">
-    		<security:password-encoder hash="md5"/>
     	</security:authentication-provider>
+<!--     	<security:authentication-provider>
+    		<security:user-service>
+    			<security:user name="jimi" password="jimispassword" authorities="ROLE_USER, ROLE_ADMIN" />
+    		</security:user-service>
+    	</security:authentication-provider> -->
     </security:authentication-manager>
-    
     <bean id="myUserDetailService" class="com.cn.qgzx.security.MyUserDetailService"/>
     
     <bean id="accessDecisionManager" class="com.cn.qgzx.security.MyAccessDecisionManager"/>   

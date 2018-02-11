@@ -1,8 +1,13 @@
 package com.cn.qgzx.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class BasicEntity {
+public class BasicEntity implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String id; //主键id
 	private String delFlag; //删除标记
 	private Date createTime; //创建时间

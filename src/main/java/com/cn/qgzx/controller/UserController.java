@@ -29,6 +29,12 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
+	@RequestMapping("/index")
+	public String index(ModelMap modelMap,HttpServletRequest request){
+		System.out.println("------------------");
+		return "/index";
+	}
+	
 	@RequestMapping("/showInfo")
 	public String showUserInfo(ModelMap modelMap,HttpServletRequest request){
 		String userId=request.getParameter("userId");
